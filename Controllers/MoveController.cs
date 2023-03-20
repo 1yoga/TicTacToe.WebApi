@@ -25,8 +25,8 @@ namespace TicTacToe.WebApi.Controllers
             {
                 return NotFound($"Player with ID {playerId} was not found");
             }
-
-            var move = await _moveService.CreateAsync(gameId, playerId, cell);
+            var symbol = player.Symbol;
+            var move = await _moveService.CreateAsync(gameId, playerId, cell, symbol);
             return CreatedAtAction(nameof(GetMove), new { id = move.Id }, move);
         }
 

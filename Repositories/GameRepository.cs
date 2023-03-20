@@ -38,10 +38,14 @@ namespace TicTacToe.WebApi.Repositories
             return game;
         }
 
-        public async Task DeleteAsync(Game game)
+        public async Task DeleteAsync(int id)
         {
-            _dbContext.Set<Game>().Remove(game);
-            await _dbContext.SaveChangesAsync();
+            var game = await GetByIdAsync(id);
+            if (game != null)
+            {
+                _dbContext.Games.Remove(game);
+                await _dbContext.SaveChangesAsync();
+            }
         }
     }
 }

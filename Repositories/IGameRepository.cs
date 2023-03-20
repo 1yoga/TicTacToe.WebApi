@@ -8,6 +8,6 @@ namespace TicTacToe.WebApi.Repositories
         Task<Game> GetByIdAsync(int id);
         Task<Game> CreateAsync(Game game);
         Task<Game> UpdateAsync(Game game);
-        Task DeleteAsync(Game game);
+        Task DeleteAsync(int id);
     }
 }

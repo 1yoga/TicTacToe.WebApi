@@ -47,9 +47,9 @@ namespace TicTacToe.WebApi.Services
             return await _gameRepository.UpdateAsync(game);
         }
 
-        public async Task DeleteAsync(Game game)
+        public async Task DeleteAsync(int id)
         {
-            await _gameRepository.DeleteAsync(game);
+            await _gameRepository.DeleteAsync(id);
         }
     }
 }

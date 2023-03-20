@@ -32,5 +32,20 @@ namespace TicTacToe.WebApi.Controllers
             var game = await _gameService.CreateAsync(player1Name, player2Name);
             return CreatedAtAction(nameof(GetById), new { id = game.Id }, game);
         }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Game>> DeletePlayer(int id)
+        {
+            var game = await _gameService.GetByIdAsync(id);
+
+            if (game == null)
+            {
+                return NotFound();
+            }
+
+            await _gameService.DeleteAsync(id);
+
+            return NoContent();
+        }
     }
 }
