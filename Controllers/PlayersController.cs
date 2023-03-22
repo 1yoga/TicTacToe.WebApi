@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TicTacToe.WebApi.Models;
+using TicTacToe.WebApi.Models.Enums;
 using TicTacToe.WebApi.Services;
 
 namespace TicTacToe.WebApi.Controllers
@@ -29,9 +30,9 @@ namespace TicTacToe.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Player>> CreatePlayer(string playerName)
+        public async Task<ActionResult<Player>> CreatePlayer(string playerName, Symbol symbol)
         {
-            var createdPlayer = await _playerService.CreatePlayerAsync(playerName);
+            var createdPlayer = await _playerService.CreatePlayerAsync(playerName, symbol);
 
             return CreatedAtAction(nameof(GetPlayerById), new { id = createdPlayer.Id }, createdPlayer);
         }
