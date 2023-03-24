@@ -46,9 +46,9 @@ namespace TicTacToe.WebApi.Controllers
                 return BadRequest();
             }
 
-            await _playerService.UpdatePlayerAsync(player);
+            var updatedPlayer = await _playerService.UpdatePlayerAsync(player);
 
-            return NoContent();
+            return Ok(updatedPlayer);
         }
 
         [HttpDelete("{id}")]

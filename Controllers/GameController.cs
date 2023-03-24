@@ -40,7 +40,7 @@ namespace TicTacToe.WebApi.Controllers
             }
             
             var secondPlayer = await _playerService.GetPlayerByIdAsync(secondPlayerId);
-            if (firstPlayer == null)
+            if (secondPlayer == null)
             {
                 return NotFound($"Player with ID {secondPlayerId} was not found");
             }

@@ -18,6 +18,10 @@ builder.Services.AddDbContext<TicTacToeContext>(options =>
 {
     options.UseSqlServer(connectionString);
 });
+
+builder.Services.AddDbContext<TicTacToeContext>(options =>
+    options.UseInMemoryDatabase(databaseName: "TestDatabase"));
+
 builder.Services.AddScoped<IPlayerService, PlayerService>();
 builder.Services.AddScoped<IGameService, GameService>();
 builder.Services.AddTransient<IPlayerRepository, PlayerRepository>();
