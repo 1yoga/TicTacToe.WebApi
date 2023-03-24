@@ -11,13 +11,11 @@ namespace TicTacToe.WebApi.Controllers
     public class GameController : ControllerBase
     {
         private readonly IGameService _gameService;
-        private readonly IMoveService _moveService;
         private readonly IPlayerService _playerService;
 
-        public GameController(IGameService gameService, IMoveService moveService, IPlayerService playerService)
+        public GameController(IGameService gameService, IPlayerService playerService)
         {
             _gameService = gameService;
-            _moveService = moveService;
             _playerService = playerService;
         }
 
@@ -40,11 +38,15 @@ namespace TicTacToe.WebApi.Controllers
             {
                 return NotFound($"Player with ID {firstPlayerId} was not found");
             }
+            
             var secondPlayer = await _playerService.GetPlayerByIdAsync(secondPlayerId);
             if (firstPlayer == null)
             {
                 return NotFound($"Player with ID {secondPlayerId} was not found");
             }
+
+            if (firstPlayerId == secondPlayerId)
+                return BadRequest($"Players must be different");
 
             var game = await _gameService.CreateAsync(firstPlayerId, secondPlayerId);
             return Ok(game);
@@ -76,7 +78,7 @@ namespace TicTacToe.WebApi.Controllers
 
             try
             {
-                var request = await _moveService.CreateAsync(gameId, playerId, cell);
+                var request = await _gameService.CreateMoveAsync(gameId, playerId, cell);
                 return Ok(request);
             }
             catch (ApplicationException ex)

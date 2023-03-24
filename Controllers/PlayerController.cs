@@ -8,11 +8,11 @@ namespace TicTacToe.WebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class PlayersController : ControllerBase
+    public class PlayerController : ControllerBase
     {
         private readonly IPlayerService _playerService;
 
-        public PlayersController(IPlayerService playerService)
+        public PlayerController(IPlayerService playerService)
         {
             _playerService = playerService;
         }

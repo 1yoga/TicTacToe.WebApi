@@ -20,7 +20,6 @@ builder.Services.AddDbContext<TicTacToeContext>(options =>
 });
 builder.Services.AddScoped<IPlayerService, PlayerService>();
 builder.Services.AddScoped<IGameService, GameService>();
-builder.Services.AddScoped<IMoveService, MoveService>();
 builder.Services.AddTransient<IPlayerRepository, PlayerRepository>();
 builder.Services.AddTransient<IGameRepository, GameRepository>();
 builder.Services.AddTransient<IMoveRepository, MoveRepository>();

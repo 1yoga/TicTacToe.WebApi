@@ -12,7 +12,7 @@ using TicTacToe.WebApi.Data;
 namespace TicTacToe.WebApi.Migrations
 {
     [DbContext(typeof(TicTacToeContext))]
-    [Migration("20230324071319_InitialCreate")]
+    [Migration("20230324113737_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -46,6 +46,9 @@ namespace TicTacToe.WebApi.Migrations
                     b.Property<int>("SecondPlayerId")
                         .HasColumnType("int");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
                     b.Property<int?>("WinnerId")
                         .HasColumnType("int");
 
@@ -73,6 +76,9 @@ namespace TicTacToe.WebApi.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("PlayerId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Symbol")
                         .HasColumnType("int");
 
                     b.HasKey("Id");

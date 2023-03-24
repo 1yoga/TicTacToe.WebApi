@@ -33,7 +33,8 @@ namespace TicTacToe.WebApi.Migrations
                     SecondPlayerId = table.Column<int>(type: "int", nullable: false),
                     Board = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     WinnerId = table.Column<int>(type: "int", nullable: true),
-                    IsDraw = table.Column<bool>(type: "bit", nullable: false)
+                    IsDraw = table.Column<bool>(type: "bit", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -60,6 +61,7 @@ namespace TicTacToe.WebApi.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     GameId = table.Column<int>(type: "int", nullable: false),
                     PlayerId = table.Column<int>(type: "int", nullable: false),
+                    Symbol = table.Column<int>(type: "int", nullable: false),
                     Cell = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
