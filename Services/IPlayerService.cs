@@ -5,9 +5,8 @@ namespace TicTacToe.WebApi.Services
     public interface IPlayerService
     {
         Task<Player> GetPlayerByIdAsync(int id);
-        Task<Player> GetPlayerByNameAsync(string name);
         Task<List<Player>> GetAllPlayersAsync();
-        Task<Player> CreatePlayerAsync(string name, string symbol);
+        Task<Player> CreatePlayerAsync(string name);
         Task<Player> UpdatePlayerAsync(Player player);
         Task DeletePlayerAsync(int id);
     }

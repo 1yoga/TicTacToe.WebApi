@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 using TicTacToe.WebApi.Data;
 using TicTacToe.WebApi.Repositories;
 using TicTacToe.WebApi.Services;
@@ -23,7 +24,10 @@ builder.Services.AddScoped<IMoveService, MoveService>();
 builder.Services.AddTransient<IPlayerRepository, PlayerRepository>();
 builder.Services.AddTransient<IGameRepository, GameRepository>();
 builder.Services.AddTransient<IMoveRepository, MoveRepository>();
-
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+});
 var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();

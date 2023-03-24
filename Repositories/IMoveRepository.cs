@@ -8,6 +8,6 @@ namespace TicTacToe.WebApi.Repositories
         Task<List<Move>> GetAllByGameIdAsync(int gameId);
         Task<Move> CreateAsync(Move move);
         Task UpdateAsync(Move move);
-        Task DeleteAsync(Move move);
+        Task DeleteAsync(int id);
     }
 }

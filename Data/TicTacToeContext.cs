@@ -19,28 +19,22 @@ namespace TicTacToe.WebApi.Data
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Game>()
-                .HasOne(g => g.Player1)
+                .HasOne(g => g.FirstPlayer)
                 .WithMany()
-                .HasForeignKey(g => g.Player1Id)
+                .HasForeignKey(g => g.FirstPlayerId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Game>()
-                .HasOne(g => g.Player2)
+                .HasOne(g => g.SecondPlayer)
                 .WithMany()
-                .HasForeignKey(g => g.Player2Id)
+                .HasForeignKey(g => g.SecondPlayerId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<Move>()
-                .HasOne(m => m.Game)
-                .WithMany()
+            modelBuilder.Entity<Game>()
+                .HasMany(g => g.Moves)
+                .WithOne()
                 .HasForeignKey(m => m.GameId)
                 .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<Move>()
-                .HasOne(m => m.Player)
-                .WithMany()
-                .HasForeignKey(m => m.PlayerId)
-                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

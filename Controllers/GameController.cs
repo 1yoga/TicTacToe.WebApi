@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Numerics;
 using TicTacToe.WebApi.Models;
+using TicTacToe.WebApi.Models.Enums;
 using TicTacToe.WebApi.Services;
 
 namespace TicTacToe.WebApi.Controllers
@@ -9,14 +11,18 @@ namespace TicTacToe.WebApi.Controllers
     public class GameController : ControllerBase
     {
         private readonly IGameService _gameService;
+        private readonly IMoveService _moveService;
+        private readonly IPlayerService _playerService;
 
-        public GameController(IGameService gameService)
+        public GameController(IGameService gameService, IMoveService moveService, IPlayerService playerService)
         {
             _gameService = gameService;
+            _moveService = moveService;
+            _playerService = playerService;
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Game>> GetById(int id)
+        public async Task<ActionResult<Game>> GetGameById(int id)
         {
             var game = await _gameService.GetByIdAsync(id);
             if (game == null)
@@ -27,14 +33,61 @@ namespace TicTacToe.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Game>> Create(string player1Name, string player2Name)
+        public async Task<ActionResult<Game>> CreateGame(int firstPlayerId, int secondPlayerId)
         {
-            var game = await _gameService.CreateAsync(player1Name, player2Name);
-            return CreatedAtAction(nameof(GetById), new { id = game.Id }, game);
+            var firstPlayer = await _playerService.GetPlayerByIdAsync(firstPlayerId);
+            if (firstPlayer == null)
+            {
+                return NotFound($"Player with ID {firstPlayerId} was not found");
+            }
+            var secondPlayer = await _playerService.GetPlayerByIdAsync(secondPlayerId);
+            if (firstPlayer == null)
+            {
+                return NotFound($"Player with ID {secondPlayerId} was not found");
+            }
+
+            var game = await _gameService.CreateAsync(firstPlayerId, secondPlayerId);
+            return Ok(game);
+        }
+
+        [HttpPost("{gameId}/createMove")]
+        public async Task<ActionResult> CreateMove(int gameId, int playerId, int cell)
+        {
+            var game = await _gameService.GetByIdAsync(gameId);
+            if (game == null)
+            {
+                return NotFound($"Game with ID {gameId} was not found");
+            }
+            var player = await _playerService.GetPlayerByIdAsync(playerId);
+            if (player == null)
+            {
+                return NotFound($"Player with ID {playerId} was not found");
+            }
+
+            switch (game.Status)
+            {
+                case Status.GameOver:
+                    return BadRequest($"Game with ID {playerId} was over");
+                case Status.NextTurnFirstPlayer when game.FirstPlayerId != playerId:
+                    return BadRequest($"Player 1's turn to go");
+                case Status.NextTurnSecondPlayer when game.SecondPlayerId != playerId:
+                    return BadRequest($"Player 2's turn to go");
+            }
+
+            try
+            {
+                var request = await _moveService.CreateAsync(gameId, playerId, cell);
+                return Ok(request);
+            }
+            catch (ApplicationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Game>> DeletePlayer(int id)
+        public async Task<ActionResult<Game>> DeleteGame(int id)
         {
             var game = await _gameService.GetByIdAsync(id);
 

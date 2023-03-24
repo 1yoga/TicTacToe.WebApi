@@ -34,13 +34,16 @@ namespace TicTacToe.WebApi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("FirstPlayerId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsDraw")
                         .HasColumnType("bit");
 
-                    b.Property<int>("Player1Id")
+                    b.Property<int>("SecondPlayerId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Player2Id")
+                    b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.Property<int?>("WinnerId")
@@ -48,9 +51,9 @@ namespace TicTacToe.WebApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Player1Id");
+                    b.HasIndex("FirstPlayerId");
 
-                    b.HasIndex("Player2Id");
+                    b.HasIndex("SecondPlayerId");
 
                     b.ToTable("Games");
                 });
@@ -76,8 +79,6 @@ namespace TicTacToe.WebApi.Migrations
 
                     b.HasIndex("GameId");
 
-                    b.HasIndex("PlayerId");
-
                     b.ToTable("Moves");
                 });
 
@@ -93,10 +94,6 @@ namespace TicTacToe.WebApi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Symbol")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.ToTable("Players");
@@ -104,40 +101,35 @@ namespace TicTacToe.WebApi.Migrations
 
             modelBuilder.Entity("TicTacToe.WebApi.Models.Game", b =>
                 {
-                    b.HasOne("TicTacToe.WebApi.Models.Player", "Player1")
+                    b.HasOne("TicTacToe.WebApi.Models.Player", "FirstPlayer")
                         .WithMany()
-                        .HasForeignKey("Player1Id")
+                        .HasForeignKey("FirstPlayerId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("TicTacToe.WebApi.Models.Player", "Player2")
+                    b.HasOne("TicTacToe.WebApi.Models.Player", "SecondPlayer")
                         .WithMany()
-                        .HasForeignKey("Player2Id")
+                        .HasForeignKey("SecondPlayerId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Player1");
+                    b.Navigation("FirstPlayer");
 
-                    b.Navigation("Player2");
+                    b.Navigation("SecondPlayer");
                 });
 
             modelBuilder.Entity("TicTacToe.WebApi.Models.Move", b =>
                 {
-                    b.HasOne("TicTacToe.WebApi.Models.Game", "Game")
-                        .WithMany()
+                    b.HasOne("TicTacToe.WebApi.Models.Game", null)
+                        .WithMany("Moves")
                         .HasForeignKey("GameId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
 
-                    b.HasOne("TicTacToe.WebApi.Models.Player", "Player")
-                        .WithMany()
-                        .HasForeignKey("PlayerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Game");
-
-                    b.Navigation("Player");
+            modelBuilder.Entity("TicTacToe.WebApi.Models.Game", b =>
+                {
+                    b.Navigation("Moves");
                 });
 #pragma warning restore 612, 618
         }

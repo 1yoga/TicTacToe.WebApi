@@ -6,7 +6,7 @@ namespace TicTacToe.WebApi.Services
     {
         Task<IEnumerable<Game>> GetAllAsync();
         Task<Game> GetByIdAsync(int id);
-        Task<Game> CreateAsync(string player1Name, string player2Name);
+        Task<Game> CreateAsync(int firstPlayerId, int secondPlayerId);
         Task<Game> UpdateAsync(Game game);
         Task DeleteAsync(int id);
     }

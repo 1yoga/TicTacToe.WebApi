@@ -17,22 +17,16 @@ namespace TicTacToe.WebApi.Services
             return await _playerRepository.GetByIdAsync(id);
         }
 
-        public async Task<Player> GetPlayerByNameAsync(string name)
-        {
-            return await _playerRepository.GetByNameAsync(name);
-        }
-
         public async Task<List<Player>> GetAllPlayersAsync()
         {
             return await _playerRepository.GetAllAsync();
         }
 
-        public async Task<Player> CreatePlayerAsync(string name, string symbol)
+        public async Task<Player> CreatePlayerAsync(string name)
         {
             var player = new Player
             {
                 Name = name,
-                Symbol = symbol
             };
             return await _playerRepository.CreateAsync(player);
         }

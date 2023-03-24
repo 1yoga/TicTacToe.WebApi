@@ -1,4 +1,5 @@
 ﻿using TicTacToe.WebApi.Models;
+using TicTacToe.WebApi.Models.Enums;
 using TicTacToe.WebApi.Repositories;
 
 namespace TicTacToe.WebApi.Services
@@ -24,19 +25,15 @@ namespace TicTacToe.WebApi.Services
             return await _gameRepository.GetByIdAsync(id);
         }
 
-        public async Task<Game> CreateAsync(string player1Name, string player2Name)
+        public async Task<Game> CreateAsync(int firstPlayerId, int secondPlayerId)
         {
-            var player1 = await _playerRepository.CreateAsync(new Player { Name = player1Name, Symbol = "X" });
-            var player2 = await _playerRepository.CreateAsync(new Player { Name = player2Name, Symbol = "O"});
-
             var game = new Game
             {
                 Board = "         ",
-                Player1Id = player1.Id,
-                Player1 = player1,
-                Player2Id = player2.Id,
-                Player2 = player2,
-                IsDraw = false
+                FirstPlayerId = firstPlayerId,
+                SecondPlayerId = secondPlayerId,
+                IsDraw = false,
+                Status = Status.NextTurnFirstPlayer
             };
 
             return await _gameRepository.CreateAsync(game);

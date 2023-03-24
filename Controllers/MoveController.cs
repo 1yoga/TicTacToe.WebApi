@@ -17,26 +17,6 @@ namespace TicTacToe.WebApi.Controllers
             _playerService = playerService;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> CreateMove(int gameId, int playerId, int cell)
-        {
-            try
-            {
-                var player = await _playerService.GetPlayerByIdAsync(playerId);
-                if (player == null)
-                {
-                    return NotFound($"Player with ID {playerId} was not found");
-                }
-                var symbol = player.Symbol;
-                var move = await _moveService.CreateAsync(gameId, playerId, cell, symbol);
-                return CreatedAtAction(nameof(GetMove), new { id = move.Id }, move);
-            }
-            catch (ApplicationException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
         [HttpGet("{id}")]
         public async Task<IActionResult> GetMove(int id)
         {
@@ -59,6 +39,22 @@ namespace TicTacToe.WebApi.Controllers
             }
 
             return moves;
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Move>> DeleteMove(int id)
+        {
+
+            var moves = await _moveService.GetAllByGameIdAsync(id);
+
+            if (moves == null)
+            {
+                return NotFound();
+            }
+
+            await _moveService.DeleteAsync(id);
+
+            return NoContent();
         }
     }
 }

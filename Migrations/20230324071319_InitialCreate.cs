@@ -16,8 +16,7 @@ namespace TicTacToe.WebApi.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Symbol = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -30,8 +29,8 @@ namespace TicTacToe.WebApi.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Player1Id = table.Column<int>(type: "int", nullable: false),
-                    Player2Id = table.Column<int>(type: "int", nullable: false),
+                    FirstPlayerId = table.Column<int>(type: "int", nullable: false),
+                    SecondPlayerId = table.Column<int>(type: "int", nullable: false),
                     Board = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     WinnerId = table.Column<int>(type: "int", nullable: true),
                     IsDraw = table.Column<bool>(type: "bit", nullable: false)
@@ -40,14 +39,14 @@ namespace TicTacToe.WebApi.Migrations
                 {
                     table.PrimaryKey("PK_Games", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Games_Players_Player1Id",
-                        column: x => x.Player1Id,
+                        name: "FK_Games_Players_FirstPlayerId",
+                        column: x => x.FirstPlayerId,
                         principalTable: "Players",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Games_Players_Player2Id",
-                        column: x => x.Player2Id,
+                        name: "FK_Games_Players_SecondPlayerId",
+                        column: x => x.SecondPlayerId,
                         principalTable: "Players",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -72,33 +71,22 @@ namespace TicTacToe.WebApi.Migrations
                         principalTable: "Games",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Moves_Players_PlayerId",
-                        column: x => x.PlayerId,
-                        principalTable: "Players",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Games_Player1Id",
+                name: "IX_Games_FirstPlayerId",
                 table: "Games",
-                column: "Player1Id");
+                column: "FirstPlayerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Games_Player2Id",
+                name: "IX_Games_SecondPlayerId",
                 table: "Games",
-                column: "Player2Id");
+                column: "SecondPlayerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Moves_GameId",
                 table: "Moves",
                 column: "GameId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Moves_PlayerId",
-                table: "Moves",
-                column: "PlayerId");
         }
 
         /// <inheritdoc />

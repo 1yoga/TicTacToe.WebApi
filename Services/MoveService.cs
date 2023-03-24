@@ -29,24 +29,13 @@ namespace TicTacToe.WebApi.Services
             return await _moveRepository.GetAllByGameIdAsync(gameId);
         }
 
-        public async Task<Move> CreateAsync(int gameId, int playerId, int cell, string symbol)
+        public async Task<Game> CreateAsync(int gameId, int playerId, int cell)
         {
             var game = await _gameRepository.GetByIdAsync(gameId);
 
             if (game == null)
             {
                 throw new ApplicationException($"Game with id {gameId} was not found.");
-            }
-
-            if (game.IsDraw)
-            {
-                throw new ApplicationException($"Game with id {gameId} ended in a draw.");
-            }
-
-            if (game.WinnerId != null)
-            {
-                var player = await _playerRepository.GetByIdAsync(playerId);
-                throw new ApplicationException($"Game with id {gameId} ended with the victory of the player {player.Name}.");
             }
 
             var existingMoves = await _moveRepository.GetAllByGameIdAsync(gameId);
@@ -56,40 +45,47 @@ namespace TicTacToe.WebApi.Services
                 throw new ApplicationException($"Move with cell {cell} already exists in game board with id {gameId}.");
             }
 
-
             var move = new Move
             {
                 GameId = gameId,
                 PlayerId = playerId,
                 Cell = cell
             };
-
-            var board = game.Board.Remove(cell, 1).Insert(cell, symbol);
+            var symbol = game.Status == Status.NextTurnFirstPlayer ? Symbol.X : Symbol.O;
+            var board = game.Board.Remove(cell, 1).Insert(cell, symbol.ToString());
             game.Board = board;
 
             var result = CheckResult(board);
 
-            if(result == Result.Player1IsWin)
+            switch (result)
             {
-                game.WinnerId = game.Player1Id;
+                case Result.Player1IsWin:
+                    game.WinnerId = game.FirstPlayerId;
+                    game.Status = Status.GameOver;
+                    break;
+                case Result.Player2IsWin:
+                    game.WinnerId = game.SecondPlayerId;
+                    game.Status = Status.GameOver;
+                    break;
+                case Result.IsDraw:
+                    game.IsDraw = true;
+                    game.Status = Status.GameOver;
+                    break;
             }
-
-            if (result == Result.Player2IsWin)
-            {
-                game.WinnerId = game.Player2Id;
-            }
-
-            if (result == Result.IsDraw)
-            {
-                game.IsDraw = true;
-            }
+            if (game.Status != Status.GameOver)
+                game.Status = game.Status == Status.NextTurnFirstPlayer ? Status.NextTurnSecondPlayer : Status.NextTurnFirstPlayer;
 
             await _moveRepository.CreateAsync(move);
             await _gameRepository.UpdateAsync(game);
 
-            return move;
+            return game;
         }
-        
+
+        public async Task DeleteAsync(int id)
+        {
+            await _moveRepository.DeleteAsync(id);
+        }
+
         private Result CheckResult(string board)
         {
             var result = Result.Continue;
@@ -135,5 +131,7 @@ namespace TicTacToe.WebApi.Services
             }
             return result;
         }
+
+
     }
 }

@@ -8,5 +8,17 @@
         IsDraw
     }
 
+    public enum Status
+    {
+        GameOver,
+        NextTurnFirstPlayer,
+        NextTurnSecondPlayer,
+    }
+    
+    public enum Symbol
+    {
+        O,
+        X
+    }
 
 }
