@@ -42,10 +42,10 @@ namespace TicTacToe.WebApi.Tests.Services
         {
             // Arrange
             var expectedPlayers = new List<Player>
-        {
-            new Player { Id = 1, Name = "John" },
-            new Player { Id = 2, Name = "Mary" }
-        };
+            {
+                new Player { Id = 1, Name = "John" },
+                new Player { Id = 2, Name = "Mary" }
+            };
             _mockPlayerRepository.Setup(repo => repo.GetAllAsync())
                 .ReturnsAsync(expectedPlayers);
 

@@ -19,7 +19,7 @@ namespace TicTacToe.WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Player>>> GetAllPlayers()
+        public async Task<ActionResult<List<Player>>> GetAllPlayers()
         {
             var players = await _playerService.GetAllPlayersAsync();
             if (players.Count < 1 )

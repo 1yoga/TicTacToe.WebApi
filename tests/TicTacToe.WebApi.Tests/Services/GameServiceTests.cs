@@ -31,12 +31,12 @@ namespace TicTacToe.WebApi.Tests.Services
         public async Task GetAllAsync_ShouldReturnAllGames()
         {
             // Arrange
-            var games = new[]
+            var games = new List<Game>
             {
-            new Game { Id = 1, Board = "XO XOXOX ", FirstPlayerId = 1, SecondPlayerId = 2, Status = Status.GameOver, WinnerId = 1 },
-            new Game { Id = 2, Board = "         ", FirstPlayerId = 3, SecondPlayerId = 4, Status = Status.NextTurnFirstPlayer },
-            new Game { Id = 3, Board = "XOXO  X  ", FirstPlayerId = 1, SecondPlayerId = 5, Status = Status.GameOver, WinnerId = 1 }
-        };
+                new Game { Id = 1, Board = "XO XOXOX ", FirstPlayerId = 1, SecondPlayerId = 2, Status = Status.GameOver, WinnerId = 1 },
+                new Game { Id = 2, Board = "         ", FirstPlayerId = 3, SecondPlayerId = 4, Status = Status.NextTurnFirstPlayer },
+                new Game { Id = 3, Board = "XOXO  X  ", FirstPlayerId = 1, SecondPlayerId = 5, Status = Status.GameOver, WinnerId = 1 }
+            };
             _gameRepositoryMock.Setup(x => x.GetAllAsync()).ReturnsAsync(games);
 
             // Act

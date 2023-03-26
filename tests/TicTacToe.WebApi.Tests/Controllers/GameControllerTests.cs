@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -24,6 +25,28 @@ namespace TicTacToe.WebApi.Tests.Controllers
             _gameServiceMock = new Mock<IGameService>();
             _playerServiceMock = new Mock<IPlayerService>();
             _controller = new GameController(_gameServiceMock.Object, _playerServiceMock.Object);
+        }
+
+        [Fact]
+        public async Task GetAllGames_ReturnsOkResult_WhenGamesExist()
+        {
+            // Arrange
+            var games = new List<Game>
+            {
+                new Game(),
+                new Game(),
+                new Game()
+            };
+
+            _gameServiceMock.Setup(service => service.GetAllAsync()).ReturnsAsync(games);
+
+            // Act
+            var result = await _controller.GetAllGames();
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+            var actualGames = Assert.IsType<Game[]>(okResult.Value);
+            Assert.Equal(3, actualGames.Count());
         }
 
         [Fact]

@@ -23,6 +23,28 @@ namespace TicTacToe.WebApi.Tests.Controllers
         }
 
         [Fact]
+        public async Task GetAllPlayers_ReturnsOkResult_WhenPlayersExist()
+        {
+            // Arrange
+            var players = new List<Player>
+            {
+                new Player(),
+                new Player(),
+                new Player()
+            };
+
+            _playerServiceMock.Setup(service => service.GetAllPlayersAsync()).ReturnsAsync(players);
+
+            // Act
+            var result = await _controller.GetAllPlayers();
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+            var actualPleyers = Assert.IsType<Player[]>(okResult.Value);
+            Assert.Equal(3, actualPleyers.Count());
+        }
+
+        [Fact]
         public async Task GetPlayerById_ReturnsOkObjectResult_WhenPlayerExists()
         {
             // Arrange

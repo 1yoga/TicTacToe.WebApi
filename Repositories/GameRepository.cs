@@ -14,7 +14,7 @@ namespace TicTacToe.WebApi.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<IEnumerable<Game>> GetAllAsync()
+        public async Task<List<Game>> GetAllAsync()
         {
             return await _dbContext.Set<Game>().ToListAsync();
         }
