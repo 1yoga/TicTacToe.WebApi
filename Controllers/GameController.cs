@@ -64,8 +64,12 @@ namespace TicTacToe.WebApi.Controllers
         }
 
         [HttpPost("{gameId}/createMove")]
-        public async Task<ActionResult> CreateMove(int gameId, int playerId, int cell)
+        public async Task<ActionResult<Game>> CreateMove(int gameId, int playerId, int cell)
         {
+            if (cell < 0 || cell > 8)
+            {
+                return BadRequest("Cell value must be between 0 and 8.");
+            }
             var game = await _gameService.GetByIdAsync(gameId);
             if (game == null)
             {
