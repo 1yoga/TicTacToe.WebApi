@@ -51,13 +51,15 @@ namespace TicTacToe.WebApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<Player>> UpdatePlayer(int id, Player player)
+        public async Task<ActionResult<Player>> UpdatePlayer(int id, string name)
         {
-            if (id != player.Id)
-            {
-                return BadRequest();
-            }
+            var player = await _playerService.GetPlayerByIdAsync(id);
 
+            if (player == null)
+            {
+                return NotFound();
+            }
+            player.Name = name;
             var updatedPlayer = await _playerService.UpdatePlayerAsync(player);
 
             return Ok(updatedPlayer);
