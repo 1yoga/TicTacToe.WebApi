@@ -17,7 +17,7 @@ namespace TicTacToe.WebApi.Services
             _moveRepository = moveRepository;
         }
 
-        public async Task<IEnumerable<Game>> GetAllAsync()
+        public async Task<List<Game>> GetAllAsync()
         {
             return await _gameRepository.GetAllAsync();
         }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Numerics;
 using TicTacToe.WebApi.Models;
 using TicTacToe.WebApi.Models.Enums;
@@ -15,6 +16,17 @@ namespace TicTacToe.WebApi.Controllers
         public PlayerController(IPlayerService playerService)
         {
             _playerService = playerService;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Player>>> GetAllPlayers()
+        {
+            var players = await _playerService.GetAllPlayersAsync();
+            if (players.Count < 1 )
+            {
+                return NotFound();
+            }
+            return Ok(players.ToArray());
         }
 
         [HttpGet("{id}")]
