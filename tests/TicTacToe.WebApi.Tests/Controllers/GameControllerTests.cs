@@ -176,7 +176,7 @@ namespace TicTacToe.WebApi.Tests.Controllers
             var result = await _controller.CreateMove(gameId, playerId, cell);
 
             // Assert
-            Assert.IsType<BadRequestObjectResult>(result);
+            Assert.IsType<BadRequestObjectResult>(result.Result);
         }
 
         [Fact]
@@ -202,7 +202,7 @@ namespace TicTacToe.WebApi.Tests.Controllers
             var result = await _controller.CreateMove(gameId, playerId, cell);
 
             // Assert
-            Assert.IsType<BadRequestObjectResult>(result);
+            Assert.IsType<BadRequestObjectResult>(result.Result);
         }
 
         [Fact]
@@ -230,7 +230,7 @@ namespace TicTacToe.WebApi.Tests.Controllers
             var result = await _controller.CreateMove(gameId, playerId, cell);
 
             // Assert
-            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
+            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result.Result);
             Assert.Equal(message, badRequestResult.Value);
         }
 
@@ -260,7 +260,7 @@ namespace TicTacToe.WebApi.Tests.Controllers
 
             // Assert
             gameServiceMock.Verify(x => x.CreateMoveAsync(gameId, playerId, cell), Times.Once);
-            Assert.IsType<OkObjectResult>(result);
+            Assert.IsType<OkObjectResult>(result.Result);
         }
     }
 }
